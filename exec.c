@@ -23,7 +23,7 @@ void exe(char *cmd, char *av[])
 	pid_t pid;
 
 	pid = fork();
-	if (id == -1)
+	if (pid == -1)
 	{
 		perror("fork");
 		free(cmd);

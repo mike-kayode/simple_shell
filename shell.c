@@ -19,6 +19,7 @@ int main(int ac, char **av)
 	char *cmd = NULL;
 	char *cmd_cp = NULL;
 	size_t n = 0;
+	int nc;
 
 	if (isatty(STDIN_FILENO))
 	{
@@ -27,7 +28,8 @@ int main(int ac, char **av)
 			wr();
 			ac = 0;
 			av = NULL;
-			if (getline(&cmd, &n, stdin) == -1)
+			nc = getline(&cmd, &n, stdin);
+			if (nc == -1)
 			{
 				write(STDOUT_FILENO, "Exiting the shell\n", 18);
 				free(cmd);
