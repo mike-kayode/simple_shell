@@ -67,7 +67,7 @@ char **get_arg_vector(char *s, char *del, int ac)
 	}
 
 	token = strtok(copy, del);
-        while (token)
+	while (token)
 	{
 		arg[i] = strdup(token);
 		if (arg[i] == NULL)

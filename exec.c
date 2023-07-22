@@ -9,8 +9,6 @@
 #include <string.h>
 #include <fcntl.h>
 
-extern char **environ;
-
 /**
  *exe - Executing the Command
  *@cmd: Command entered
@@ -20,18 +18,19 @@ extern char **environ;
 
 void exe(char *cmd, char *av[])
 {
-        char **envp = environ;
-        int status, execval;
-        pid_t pid;
+	char **envp = environ;
+	int status, execval;
+	pid_t pid;
 
-        if ((pid = fork()) == -1)
-        {
-                perror("fork");
+	pid = fork();
+	if (id == -1)
+	{
+		perror("fork");
 		free(cmd);
-                exit(EXIT_FAILURE);
-        }
-        if (pid == 0)
-        {
+		exit(EXIT_FAILURE);
+	}
+	else if (pid == 0)
+	{
 		execval = execve(cmd, av, envp);
 		if (execval == -1)
 		{
@@ -39,10 +38,9 @@ void exe(char *cmd, char *av[])
 			free(cmd);
 			exit(EXIT_FAILURE);
 		}
-        }
-        else
-        {
-                wait(&status);
-        }
-
+	}
+	else
+	{
+		wait(&status);
+	}
 }

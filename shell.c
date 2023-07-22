@@ -8,10 +8,10 @@
 #include <string.h>
 
 /**
- *
- *@:
- *
- *Return:
+ *main - Entry to the program
+ *@ac: Argument count
+ *@av: NULL terminated argument vector
+ *Return: Zero on success
 */
 
 int main(int ac, char **av)
@@ -22,7 +22,7 @@ int main(int ac, char **av)
 
 	if (isatty(STDIN_FILENO))
 	{
- 		while (1)
+		while (1)
 		{
 			wr();
 			ac = 0;

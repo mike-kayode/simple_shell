@@ -22,5 +22,4 @@ void wr(void)
 
         getcwd(wd, sizeof(wd));
         write(STDOUT_FILENO, wd, _strlen(wd));
-        write(STDOUT_FILENO, "$ ", 2);
-}
+        write(STDOUT_FILENO, "$ ", 2);}

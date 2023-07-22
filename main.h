@@ -11,6 +11,8 @@
 #include "main.h"
 #include <errno.h>
 
+extern char **environ;
+
 /* Function prototypes */
 char *_strdup(char *s);
 int _putchar(char c);
