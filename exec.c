@@ -12,28 +12,33 @@
 extern char **environ;
 
 /**
- *
- *@:
- *
- *Return:
+ *exe - Executing the Command
+ *@cmd: Command entered
+ *@av: Pointer to argument vector
+ *Return: Void
 */
 
 void exe(char *cmd, char *av[])
 {
         char **envp = environ;
-        int status;
+        int status, execval;
         pid_t pid;
 
         if ((pid = fork()) == -1)
         {
                 perror("fork");
+		free(cmd);
                 exit(EXIT_FAILURE);
         }
         if (pid == 0)
         {
-                execve(cmd, av, envp);
-                perror("Exec");
-                exit(EXIT_FAILURE);
+		execval = execve(cmd, av, envp);
+		if (execval == -1)
+		{
+			perror("Exec");
+			free(cmd);
+			exit(EXIT_FAILURE);
+		}
         }
         else
         {

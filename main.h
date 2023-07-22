@@ -12,11 +12,13 @@
 #include <errno.h>
 
 /* Function prototypes */
+char *_strdup(char *s);
 int _putchar(char c);
 int _strlen(char *s);
+char *_strcpy(char *dst, char *src);
 ssize_t _getline(char **lp, size_t *n, FILE *strm);
-int _ac(char **arg, char *del);
-char *_acv(char **arg, char *del, int ac);
+int get_arg_count(char *s, const char *del);
+char **get_arg_vector(char *s, char *del, int ac);
 void wr(void);
 void mcerr(char *av);
 void exe(char *cmd, char *av[]);

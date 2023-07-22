@@ -12,15 +12,16 @@
  * Return: Number of arguments
  */
 
-int get_arg_count(const char *s, const char *del)
+int get_arg_count(char *s, const char *del)
 {
 	int count = 0;
 	char *copy, *token;
 
-	copy = strdup(s);
+	copy = _strdup(s);
 	if (copy == NULL)
 	{
 		perror("Error: ");
+		free(copy);
 		exit(EXIT_FAILURE);
 	}
 
@@ -43,16 +44,17 @@ int get_arg_count(const char *s, const char *del)
  * Return: Token
  */
 
-char **get_arg_vector(const char *s, const char *del, int ac)
+char **get_arg_vector(char *s, char *del, int ac)
 {
 	char **arg;
 	char *copy, *token;
 	int i = 0;
 
-	copy = strdup(s);
+	copy = _strdup(s);
 	if (copy == NULL)
 	{
 		perror("Error: ");
+		free(copy);
 		exit(EXIT_FAILURE);
 	}
 
@@ -60,6 +62,7 @@ char **get_arg_vector(const char *s, const char *del, int ac)
 	if (arg == NULL)
 	{
 		perror("Error: ");
+		free(arg);
 		exit(EXIT_FAILURE);
 	}
 

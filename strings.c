@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/types.h>
+#include "main.h"
 
 int _strlen(char *s)
 {
@@ -17,17 +18,32 @@ int _strlen(char *s)
         return (len);
 }
 
+char *_strcpy(char *dst, char *src)
+{
+	int i;
+
+	for (i = 0; src[i] != '\0'; i++)
+		dst[i] = src[i];
+	dst[i] = '\0';
+	return (dst);
+}
+
 char *_strdup(char *str)
 {
-        int i = 0, n;
+        int n;
         char *dup;
 
+	if (str == NULL)
+		return (NULL);
         n = _strlen(str) + 1;
         dup = malloc(sizeof(char *) * n);
-        while(*str != '\0')
-        {
-                dup[i] = str[i];
-                str++;
-        }
-        return (dup);
+	if (dup == NULL)
+	{
+		perror("Malloc: ");
+		free(dup);
+		exit(EXIT_FAILURE);
+	}
+        if (dup != NULL)
+		dup = _strcpy(dup, str);
+	return (dup);
 }

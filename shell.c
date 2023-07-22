@@ -17,9 +17,8 @@
 int main(int ac, char **av)
 {
 	char *cmd = NULL;
-	char *tok = NULL;
+	char *cmd_cp = NULL;
 	size_t n = 0;
-	int i = 0;
 
 	if (isatty(STDIN_FILENO))
 	{
@@ -31,39 +30,29 @@ int main(int ac, char **av)
 			if (getline(&cmd, &n, stdin) == -1)
 			{
 				write(STDOUT_FILENO, "Exiting the shell\n", 18);
+				free(cmd);
 				break;
 			}
+			cmd_cp = _strdup(cmd);
+			ac = get_arg_count(cmd, " \n");
 			av = malloc(sizeof(char *) * ac);
 			if (av == NULL)
 			{
 				perror("Malloc");
+				free(av);
 				exit(EXIT_FAILURE);
 			}
-			tok = strtok(cmd, " \n");
-			while(tok)
+			av = get_arg_vector(cmd_cp, " \n", ac);
+			if (ac > 1)
 			{
-				av[i] = tok;
-				tok = strtok(NULL, " \n");
-				i++;
-			}
-			av[i] = NULL;
-			if (ac == 1)
-			{
-				exe(av[0], av);
-			}
-			else
-			{
-				perror("Error");
+				perror("Exec");
+				free(av);
 				exit(EXIT_FAILURE);
 			}
+			exe(av[0], av);
 			free(av);
-			free(cmd);
+			free(cmd_cp);
 		}
 	}
-	else
-	{
-
-	}
-
 	return (0);
 }
