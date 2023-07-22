@@ -2,65 +2,80 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/wait.h>
-#include <sys/types.h>
 #include "main.h"
-#include <errno.h>
 #include <string.h>
 
 /**
- *_ac - Gets argument count in the command
- *@s: Passed argument
- *@del: Delimiter
- *
- *Return: Number of arguments
-*/
+ * get_arg_count - Gets argument count in the command
+ * @s: Passed argumenet
+ * @del: DElimer
+ * Return: Number of arguments
+ */
 
-int _ac(char **arg, char *del)
+int get_arg_count(const char *s, const char *del)
 {
-	char *token;
 	int count = 0;
+	char *copy, *token;
 
-	token = strtok(*arg, del);
-	if (token == NULL)
+	copy = strdup(s);
+	if (copy == NULL)
 	{
 		perror("Error: ");
 		exit(EXIT_FAILURE);
 	}
+
+	token = strtok(copy, del);
 	while (token)
 	{
 		token = strtok(NULL, del);
 		count++;
 	}
+
+	free(copy);
 	return (count);
 }
 
 /**
- *_acv - Gets argument vector
- *@s: Passed argument
- *@del: Delimiter
- *@ac: Argument count
- *
- *Return: Tokens
-*/
+ * get_arg_vector - Gets argument vector
+ * @s: Passed argument
+ * @del: Delimiter
+ * @ac: Argument count
+ * Return: Token
+ */
 
-char *_acv(char **arg, char *del, int ac)
+char **get_arg_vector(const char *s, const char *del, int ac)
 {
+	char **arg;
+	char *copy, *token;
 	int i = 0;
-	char *token;
 
-	arg = malloc(sizeof(char *) * ac);
-	token = strtok(*arg, del);
-	if (token == NULL)
+	copy = strdup(s);
+	if (copy == NULL)
 	{
 		perror("Error: ");
 		exit(EXIT_FAILURE);
 	}
-	while (token)
+
+	arg = malloc(sizeof(char *) * ac);
+	if (arg == NULL)
 	{
-		arg[i] = token;
+		perror("Error: ");
+		exit(EXIT_FAILURE);
+	}
+
+	token = strtok(copy, del);
+        while (token)
+	{
+		arg[i] = strdup(token);
+		if (arg[i] == NULL)
+		{
+			perror("Error: ");
+			exit(EXIT_FAILURE);
+		}
 		token = strtok(NULL, del);
 		i++;
 	}
-	return (token);
+
+	free(copy);
+	return (arg);
 }

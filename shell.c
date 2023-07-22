@@ -21,7 +21,7 @@ int main(int ac, char **av)
 	size_t n = 0;
 	int i = 0;
 
-	ac = 0
+	ac = 0;
 	av = NULL;
 	if (isatty(STDIN_FILENO))
 	{

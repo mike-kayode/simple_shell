@@ -20,24 +20,24 @@ extern char **environ;
 
 void exe(char *cmd, char *av[])
 {
-	char **envp = environ;
-	int status;
-	pid_t pid;
+        char **envp = environ;
+        int status;
+        pid_t pid;
 
-	if ((pid = fork()) == -1)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	if (pid == 0)
-	{
-		execve(cmd, av, envp);
-		perror("Exec");
-		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		wait(&status);
-       	}
+        if ((pid = fork()) == -1)
+        {
+                perror("fork");
+                exit(EXIT_FAILURE);
+        }
+        if (pid == 0)
+        {
+                execve(cmd, av, envp);
+                perror("Exec");
+                exit(EXIT_FAILURE);
+        }
+        else
+        {
+                wait(&status);
+        }
 
 }

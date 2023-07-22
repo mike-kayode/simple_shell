@@ -18,9 +18,9 @@
 
 void wr(void)
 {
-	char wd[1024];
-	
-	getcwd(wd, sizeof(wd));
-	write(STDOUT_FILENO, wd, _strlen(wd));
-	write(STDOUT_FILENO, "$ ", 2);
+        char wd[1024];
+
+        getcwd(wd, sizeof(wd));
+        write(STDOUT_FILENO, wd, _strlen(wd));
+        write(STDOUT_FILENO, "$ ", 2);
 }
