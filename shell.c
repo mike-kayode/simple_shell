@@ -43,12 +43,6 @@ int main(int ac, char **av)
 				exit(EXIT_FAILURE);
 			}
 			av = get_arg_vector(cmd_cp, " \n", ac);
-			if (ac > 1)
-			{
-				perror("Exec");
-				free(av);
-				exit(EXIT_FAILURE);
-			}
 			exe(av[0], av);
 			free(av);
 			free(cmd_cp);
