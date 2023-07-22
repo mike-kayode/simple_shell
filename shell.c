@@ -21,13 +21,13 @@ int main(int ac, char **av)
 	size_t n = 0;
 	int i = 0;
 
-	ac = 0;
-	av = NULL;
 	if (isatty(STDIN_FILENO))
 	{
-		while (1)
+ 		while (1)
 		{
 			wr();
+			ac = 0;
+			av = NULL;
 			if (getline(&cmd, &n, stdin) == -1)
 			{
 				write(STDOUT_FILENO, "Exiting the shell\n", 18);
