@@ -27,6 +27,7 @@ void exe(char *cmd, char *av[])
 	{
 		perror("fork");
 		free(cmd);
+		free(av);
 		exit(EXIT_FAILURE);
 	}
 	else if (pid == 0)
@@ -36,11 +37,14 @@ void exe(char *cmd, char *av[])
 		{
 			perror("Exec");
 			free(cmd);
+			free(av);
 			exit(EXIT_FAILURE);
 		}
 	}
 	else
 	{
 		wait(&status);
+		free(cmd);
+		free(av);
 	}
 }

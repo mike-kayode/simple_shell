@@ -46,7 +46,6 @@ int main(int ac, char **av)
 			}
 			av = get_arg_vector(cmd_cp, " \n", ac);
 			exe(av[0], av);
-			free(av);
 			free(cmd_cp);
 		}
 	}
