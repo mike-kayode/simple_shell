@@ -25,12 +25,21 @@ int main(int ac, char **av)
 	{
 		ac = 0;
 		av = NULL;
-		if (isatty(STDIN_FILENO) == 1)
-			wr();
 		nc = getline(&cmd, &n, stdin);
 		if (nc == -1)
 		{
-			write(STDIN_FILENO, "\n", 1);
+			write(STDOUT_FILENO, "Exiting the shell\n", 18);
+			free(cmd);
+			break;
+		}
+		if (isatty(STDIN_FILENO))
+			wr();
+		ac = 0;
+		av = NULL;
+		nc = getline(&cmd, &n, stdin);
+		if (nc == -1)
+		{
+			write(STDOUT_FILENO, "Exiting the shell\n", 18);
 			free(cmd);
 			break;
 		}
