@@ -1,53 +1,103 @@
-#include "main.h"
 #include <stdio.h>
-#include <stddef.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <sys/types.h>
 #include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+#define MAX_COMMAND_LENGHT 100
+#define MAX_ARGS 10
 
 /**
- *main - Entry to the program
- *@ac: Argument count
- *@av: NULL terminated argument vector
- *Return: Zero on success
-*/
+ * print_prompt - Function that open a program
+ * Return: Succcess
+ */
 
-int main(int ac, char **av)
+void print_prompt()
 {
-	char *cmd = NULL;
-	char *cmd_cp = NULL;
-	size_t n = 0;
-	int nc;
+        printf("$) ");
+}
 
-	if (isatty(STDIN_FILENO))
+
+/**
+ * execute_command - Execution of second command
+ * @command: character command
+ * Return: Always sucess
+ */
+
+int execute_command(const char *command)
+{
+	char *token;
+	char *args[MAX_ARGS + 2];
+	pid_t pid;
+
+	int arg_count = 0;
+
+	token = strtok((char *)command, " ");
+	while (token != NULL && arg_count < MAX_ARGS + 1)
 	{
-		while (1)
+		args[arg_count++] = token;
+		token = strtok(NULL, " ");
+	}
+	args[arg_count] = NULL;
+
+	if (strcmp(args[0], "exit") == 0)
+	{
+		return (0);
+	}
+
+        pid = fork();
+
+        if (pid < 0)
+        {
+                perror("Fork error");
+                exit(EXIT_FAILURE);
+	}
+	else if (pid == 0)
+	{
+		if (execvp(args[0], args) == -1)
 		{
-			wr();
-			ac = 0;
-			av = NULL;
-			nc = getline(&cmd, &n, stdin);
-			if (nc == -1)
-			{
-				write(STDOUT_FILENO, "Exiting the shell\n", 18);
-				free(cmd);
-				break;
-			}
-			cmd_cp = _strdup(cmd);
-			ac = get_arg_count(cmd, " \n");
-			av = malloc(sizeof(char *) * ac);
-			if (av == NULL)
-			{
-				perror("Malloc");
-				free(av);
-				exit(EXIT_FAILURE);
-			}
-			av = get_arg_vector(cmd_cp, " \n", ac);
-			exe(av[0], av);
-			free(cmd_cp);
+			perror("Command execution error");
+			exit(EXIT_FAILURE);
 		}
 	}
+	else
+	{
+		int status;
+		waitpid(pid, &status, 0);
+	}
 	return (0);
+}
+
+
+/**
+ * shell_main - Execution command
+ * Return: Success
+ */
+
+void shell_main()
+{
+	char command[MAX_COMMAND_LENGHT];
+
+	while (1)
+	{
+		print_prompt();
+
+		if (fgets(command, sizeof(command), stdin) == NULL)
+		{
+			printf("\n");
+			break;
+		}
+
+		command[strcspn(command, "\n")] = '\0';
+
+		if (strcmp(command, "exit") == 0)
+		{
+			break;
+		}
+
+		if (execute_command(command) != 0)
+		{
+		}
+	}
 }
