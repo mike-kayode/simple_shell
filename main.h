@@ -14,6 +14,9 @@
 extern char **environ;
 
 /* Function prototypes */
+void print_prompt();
+void execute_command(const char *command);
+void shell_main();
 char *_strdup(char *s);
 int _putchar(char c);
 int _strlen(char *s);
