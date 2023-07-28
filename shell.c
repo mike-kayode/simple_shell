@@ -4,8 +4,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-#define MAX_COMMAND_LENGHT 100
-#define MAX_ARGS 10
+#define MAX_COMMAND_LENGHT 1024
 
 /**
  * main - Function that open a program
@@ -42,22 +41,24 @@ int main(void)
 		}
 		else if (pid == 0)
 		{
-			char *token;
-			char *argv[MAX_COMMAND_LENGHT / 2 + 1];
-			int i = 0;
-
-			token = strtok(command, " ");
-			while (token != NULL)
+			extern char **environ;
+			char **argv = (char **)malloc(2 * sizeof(char *));
+			
+			if (argv == NULL)
 			{
-				argv[i++] = token;
-				token = strtok(NULL, " ");
+				perror("malloc");
+				exit(EXIT_FAILURE);
 			}
-			argv[i] = NULL;
 
-			if (execvp(argv[0], argv) == -1)
-                {
-                        perror("execvp");
-		}
+			argv[0] = command;
+			argv[1] = NULL;
+
+			if (execve(command, argv, environ) == -1)
+			{
+				perror(command);
+			}
+
+			free(argv);
                         exit(EXIT_FAILURE);
                 }
 		else
