@@ -1,1 +1,1 @@
-Alx Simple Shell Team Projģ editedct
+ALX simple shell project
